@@ -1,0 +1,10 @@
+### Intellij ###
+.idea
+
+### SBT ###
+target/
+*.class
+
+### Scala ###
+*.class
+*.log
