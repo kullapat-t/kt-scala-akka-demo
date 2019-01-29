@@ -4,18 +4,19 @@ import akka.actor.ActorRef
 import akka.actor.Status.Failure
 import com.kullapat.kt.BaseTestKit
 import com.kullapat.kt.actor.UserActor.GetUser
+import com.kullapat.kt.model.User
 
 class UserActorTest extends BaseTestKit("UserActorTest") {
 
   private val userActor: ActorRef = system.actorOf(UserActor.props)
 
   "UserActor" should {
-    "return get user" in {
+    "return user detail" in {
       userActor ! GetUser
-      expectMsg("get user!")
+      expectMsgType[User]
     }
 
-    "fail" in{
+    "fail" in {
       userActor ! "unknown message"
       expectMsgType[Failure]
     }

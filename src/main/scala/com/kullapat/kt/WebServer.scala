@@ -6,6 +6,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.kullapat.kt.actor.UserActor
 import com.kullapat.kt.actor.UserActor.GetUser
+import com.kullapat.kt.model.User
 
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
@@ -24,7 +25,7 @@ object WebServer extends HttpApp {
       } ~
       get {
         onComplete(userActor ? GetUser) {
-          case Success("get user!") => complete("get user success!")
+          case Success(user: User)  => complete(s"user: $user")
           case Failure(exception)   => complete(s"Failed to get user(s): ${exception.getLocalizedMessage}")
         }
       }
