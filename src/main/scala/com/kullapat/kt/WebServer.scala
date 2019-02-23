@@ -25,8 +25,17 @@ object WebServer extends HttpApp {
       } ~
       get {
         onComplete(userActor ? GetUser) {
-          case Success(user: User)  => complete(s"user: $user")
-          case Failure(exception)   => complete(s"Failed to get user(s): ${exception.getLocalizedMessage}")
+          case Success(user: User)  ⇒ complete(s"user: $user")
+          case Failure(exception)   ⇒ complete(s"Failed to get user(s): ${exception.getLocalizedMessage}")
+        }
+      } ~
+      parameters('firstName, 'item.*) { (firstName, items) ⇒
+        get {
+          items.toList match {
+            case Nil          ⇒ complete(s"The firstName is '$firstName' and there are no items.")
+            case item :: Nil  ⇒ complete(s"The firstName is '$firstName' and the item is $item.")
+            case multiple     ⇒ complete(s"The firstName is '$firstName' and the items are ${multiple.mkString(", ")}.")
+          }
         }
       }
     }
